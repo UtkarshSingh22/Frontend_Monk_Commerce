@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
 import Modal from "./Modal";
-import ProductList from "./ProductLists";
+import ProductList from "./ProductList";
 
 const ProductPicker = () => {
     const [modalOpen, setModalOpen] = useState(false);
@@ -23,7 +23,6 @@ const ProductPicker = () => {
         const data = await response.json();
 
         setProductData(data);
-        // console.log(data);
     };
 
     useEffect(() => {
