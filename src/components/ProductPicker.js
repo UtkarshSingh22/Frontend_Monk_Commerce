@@ -1,13 +1,17 @@
 import { Fragment, useState } from "react";
+import Modal from "./Modal";
 
 const ProductPicker = () => {
     const [modalOpen, setModalOpen] = useState(false);
+    const [searchInput, setSearchInput] = useState("");
 
-    const modalOpenHandler = () => {
-        setModalOpen(true);
+    const modalToggleHandler = () => {
+        setModalOpen((prevState) => !prevState);
     };
 
-    
+    const inputChangeHandler = (event) => {
+        setSearchInput(event.target.value);
+    };
 
     return (
         <Fragment>
@@ -20,9 +24,15 @@ const ProductPicker = () => {
                         <h3>Discount</h3>
                     </div>
                     <div></div>
-                    <button onClick={modalOpenHandler}>Add Product</button>
+                    <button onClick={modalToggleHandler}>Add Product</button>
                 </div>
             </section>
+            {modalOpen && (
+                <Modal onCloseModal={modalToggleHandler}>
+                    <h2>Add products</h2>
+                    <input type="text" onChange={inputChangeHandler} />
+                </Modal>
+            )}
         </Fragment>
     );
 };
