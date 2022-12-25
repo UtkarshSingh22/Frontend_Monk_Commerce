@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ProductCart from "./ProductCart";
+import AddProduct from "./AddProduct";
 
 function ProductList({ products, onCloseModal }) {
     // State to store the selected products and their variants
@@ -66,7 +66,7 @@ function ProductList({ products, onCloseModal }) {
     };
 
     return (
-        <ProductCart
+        <AddProduct
             products={products}
             selected={selected}
             totalProducts={totalProducts}

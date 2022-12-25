@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import Modal from "./Modal";
 import ProductList from "./ProductList";
+import SelectedProducts from "./SelectedProducts";
 
 const ProductPicker = () => {
     const [modalOpen, setModalOpen] = useState(false);
@@ -58,7 +59,10 @@ const ProductPicker = () => {
                         <h3>Product</h3>
                         <h3>Discount</h3>
                     </div>
-                    <button onClick={modalToggleHandler}>Add Product</button>
+                    <SelectedProducts
+                        allProducts={productData}
+                        onToggleModal={modalToggleHandler}
+                    />
                 </div>
             </section>
             {modalOpen && (

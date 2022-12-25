@@ -1,4 +1,4 @@
-const ProductCart = ({
+const AddProduct = ({
     products,
     selected,
     totalProducts,
@@ -39,4 +39,4 @@ const ProductCart = ({
     );
 };
 
-export default ProductCart;
+export default AddProduct;
