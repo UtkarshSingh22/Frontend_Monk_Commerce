@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
 import Modal from "./Modal";
-import ProductsList from "./ProductsList";
+import ProductList from "./ProductLists";
 
 const ProductPicker = () => {
     const [modalOpen, setModalOpen] = useState(false);
@@ -65,7 +65,7 @@ const ProductPicker = () => {
                         onChange={inputChangeHandler}
                         value={searchInput}
                     />
-                    <ProductsList items={filteredData} />
+                    <ProductList products={filteredData} />
                 </Modal>
             )}
         </Fragment>
