@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AddProduct from "./AddProduct";
 
-function ProductList({ products, onCloseModal }) {
+function ProductList({ products, onCloseModal, onSelectItems }) {
     // State to store the selected products and their variants
     const [selected, setSelected] = useState({});
     const [totalProducts, setTotalProducts] = useState(0);
@@ -35,8 +35,6 @@ function ProductList({ products, onCloseModal }) {
                     : false,
             });
 
-            console.log(productChecked);
-
             isChecked
                 ? !productChecked &&
                   setTotalProducts((prevState) => prevState + 1)
@@ -62,7 +60,10 @@ function ProductList({ products, onCloseModal }) {
     };
     // Handle click event for the "Add" button
     const handleClick = () => {
-        console.log(selected);
+        onSelectItems(selected);
+        onCloseModal()
+        setSelected({})
+        setTotalProducts(0)
     };
 
     return (

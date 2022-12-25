@@ -8,6 +8,7 @@ const ProductPicker = () => {
     const [searchInput, setSearchInput] = useState("");
     const [productData, setProductData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
+    const [selectedItems, setSelectedItems] = useState({})
 
     const modalToggleHandler = () => {
         setModalOpen((prevState) => !prevState);
@@ -49,6 +50,10 @@ const ProductPicker = () => {
         // console.log(filteredItems)
     }, [searchInput]);
 
+    const getSelectedItems = (items) => {
+        setSelectedItems(items);
+    }
+
     return (
         <Fragment>
             <header>Monk Upsell & Cross-sell</header>
@@ -62,6 +67,8 @@ const ProductPicker = () => {
                     <SelectedProducts
                         allProducts={productData}
                         onToggleModal={modalToggleHandler}
+                        selectedItems={selectedItems}
+                        modalOpen={modalOpen}
                     />
                 </div>
             </section>
@@ -79,6 +86,7 @@ const ProductPicker = () => {
                     <ProductList
                         products={filteredData}
                         onCloseModal={modalToggleHandler}
+                        onSelectItems={getSelectedItems}
                     />
                 </Modal>
             )}
