@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import ProductCart from "./ProductCart";
 
-function ProductList({ products }) {
+function ProductList({ products, onCloseModal }) {
     // State to store the selected products and their variants
     const [selected, setSelected] = useState({});
+    const [totalProducts, setTotalProducts] = useState(0);
 
     // Handle change event for checkboxes
     const handleChange = (event) => {
@@ -12,17 +14,16 @@ function ProductList({ products }) {
 
         if (variantId.length) {
             let productChecked = 0;
-            if (!isChecked) {
-                for (let product of products) {
-                    if (product.id == productId) {
-                        for (let variant of product.variants) {
-                            if (selected[variant.id] === true) {
-                                productChecked++;
-                            }
+            for (let product of products) {
+                if (product.id == productId) {
+                    for (let variant of product.variants) {
+                        if (selected[variant.id] === true) {
+                            productChecked++;
                         }
                     }
                 }
             }
+
             // Update the selected state for the variant and its parent product
             setSelected({
                 ...selected,
@@ -33,10 +34,18 @@ function ProductList({ products }) {
                     ? true
                     : false,
             });
+
+            console.log(productChecked);
+
+            isChecked
+                ? !productChecked &&
+                  setTotalProducts((prevState) => prevState + 1)
+                : productChecked === 1 &&
+                  setTotalProducts((prevState) => prevState - 1);
         } else {
             // Update the selected state for the product and its variants
             const product = products.find((p) => p.id == productId);
-            
+
             setSelected({
                 ...selected,
                 [productId]: isChecked,
@@ -45,6 +54,10 @@ function ProductList({ products }) {
                     return acc;
                 }, {}),
             });
+
+            isChecked === true
+                ? setTotalProducts((prevState) => prevState + 1)
+                : setTotalProducts((prevState) => prevState - 1);
         }
     };
     // Handle click event for the "Add" button
@@ -53,33 +66,14 @@ function ProductList({ products }) {
     };
 
     return (
-        <div>
-            {products.map((product) => (
-                <div key={product.id}>
-                    <input
-                        type="checkbox"
-                        value={product.id}
-                        onChange={handleChange}
-                        checked={selected[product.id] === true}
-                    />
-                    <img src={product.image.src} />
-                    <h3>{product.title}</h3>
-                    {product.variants.map((variant) => (
-                        <div key={variant.id}>
-                            <input
-                                type="checkbox"
-                                name={variant.id}
-                                value={product.id}
-                                onChange={handleChange}
-                                checked={selected[variant.id] === true}
-                            />
-                            {variant.title}
-                        </div>
-                    ))}
-                </div>
-            ))}
-            <button onClick={handleClick}>Add</button>
-        </div>
+        <ProductCart
+            products={products}
+            selected={selected}
+            totalProducts={totalProducts}
+            handleChange={handleChange}
+            handleClick={handleClick}
+            onCloseModal={onCloseModal}
+        />
     );
 }
 

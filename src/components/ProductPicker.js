@@ -30,15 +30,21 @@ const ProductPicker = () => {
     }, []);
 
     useEffect(() => {
-        const filteredItems = [];
+        if (!searchInput.length) {
+            setFilteredData([]);
+        } else {
+            const filteredItems = [];
 
-        for (let item of productData) {
-            if (item.title.toLowerCase().includes(searchInput.toLowerCase())) {
-                filteredItems.push(item);
+            for (let item of productData) {
+                if (
+                    item.title.toLowerCase().includes(searchInput.toLowerCase())
+                ) {
+                    filteredItems.push(item);
+                }
             }
-        }
 
-        setFilteredData(filteredItems);
+            setFilteredData(filteredItems);
+        }
         // console.log(filteredItems)
     }, [searchInput]);
 
@@ -52,19 +58,24 @@ const ProductPicker = () => {
                         <h3>Product</h3>
                         <h3>Discount</h3>
                     </div>
-                    <div></div>
                     <button onClick={modalToggleHandler}>Add Product</button>
                 </div>
             </section>
             {modalOpen && (
                 <Modal onCloseModal={modalToggleHandler}>
-                    <h2>Add products</h2>
+                    <div>
+                        <h2>Add products</h2>
+                        <h2 onClick={modalToggleHandler}>X</h2>
+                    </div>
                     <input
                         type="text"
                         onChange={inputChangeHandler}
                         value={searchInput}
                     />
-                    <ProductList products={filteredData} />
+                    <ProductList
+                        products={filteredData}
+                        onCloseModal={modalToggleHandler}
+                    />
                 </Modal>
             )}
         </Fragment>
