@@ -1,9 +1,12 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Modal from "./Modal";
+import ProductsList from "./ProductsList";
 
 const ProductPicker = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const [searchInput, setSearchInput] = useState("");
+    const [productData, setProductData] = useState([]);
+    const [filteredData, setFilteredData] = useState([]);
 
     const modalToggleHandler = () => {
         setModalOpen((prevState) => !prevState);
@@ -12,6 +15,33 @@ const ProductPicker = () => {
     const inputChangeHandler = (event) => {
         setSearchInput(event.target.value);
     };
+
+    const fetchProducts = async () => {
+        const response = await fetch(
+            "https://stageapibc.monkcommerce.app/admin/shop/product?search=F&page=1"
+        );
+        const data = await response.json();
+
+        setProductData(data);
+        // console.log(data);
+    };
+
+    useEffect(() => {
+        fetchProducts();
+    }, []);
+
+    useEffect(() => {
+        const filteredItems = [];
+
+        for (let item of productData) {
+            if (item.title.toLowerCase().includes(searchInput.toLowerCase())) {
+                filteredItems.push(item);
+            }
+        }
+
+        setFilteredData(filteredItems);
+        // console.log(filteredItems)
+    }, [searchInput]);
 
     return (
         <Fragment>
@@ -30,7 +60,12 @@ const ProductPicker = () => {
             {modalOpen && (
                 <Modal onCloseModal={modalToggleHandler}>
                     <h2>Add products</h2>
-                    <input type="text" onChange={inputChangeHandler} />
+                    <input
+                        type="text"
+                        onChange={inputChangeHandler}
+                        value={searchInput}
+                    />
+                    <ProductsList items={filteredData} />
                 </Modal>
             )}
         </Fragment>
