@@ -104,13 +104,21 @@ const SelectedProducts = ({ allProducts, onToggleModal, selectedItems }) => {
         }
     }, [memoizeSelectedItems]);
 
-    const handlerDragEnd = (e) => {};
+    const handleDragEnd = (event) => {
+        const { active, over } = event;
+
+        if (active.id !== over.id) {
+            setProducts((items) => {
+                return arrayMove(items, active.id, over.id);
+            });
+        }
+    };
 
     return (
         <Fragment>
             <DndContext
                 collisionDetection={closestCenter}
-                onDragEnd={handlerDragEnd}
+                onDragEnd={handleDragEnd}
             >
                 <div>
                     <SortableContext

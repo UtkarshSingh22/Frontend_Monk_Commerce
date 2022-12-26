@@ -23,13 +23,14 @@ const ProductItem = ({
     };
 
     return (
-        <div
-            ref={setNodeRef}
-            style={style}
-            {...attributes}
-            {...listeners}
-        >
-            <img src={dragIcon} alt="drag icon" />
+        <div style={style}>
+            <img
+                src={dragIcon}
+                alt="drag icon"
+                ref={setNodeRef}
+                {...attributes}
+                {...listeners}
+            />
             <div>{index + 1}.</div>
             <input
                 type="text"
