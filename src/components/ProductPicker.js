@@ -25,7 +25,6 @@ const ProductPicker = () => {
         const data = await response.json();
 
         setProductData(data);
-        // console.log(data)
     };
 
     useEffect(() => {

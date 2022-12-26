@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import dragIcon from "../imgs/drag.png";
 import pencilIcon from "../imgs/pencil.png";
 
@@ -9,15 +10,30 @@ const SelectedProducts = ({
     modalOpen,
 }) => {
     const [products, setProducts] = useState([
-        { name: "", id: "", variants: [], showVariants: false },
+        {
+            name: "",
+            id: "",
+            variants: [],
+            showVariants: false,
+            addDiscount: false,
+        },
     ]);
+
     const [newIndex, setNewIndex] = useState();
+
+    const navigate = useNavigate();
 
     const handleAddProduct = (event) => {
         event.preventDefault();
         setProducts([
             ...products,
-            { name: "", id: "", variants: [], showVariants: false },
+            {
+                name: "",
+                id: "",
+                variants: [],
+                showVariants: false,
+                addDiscount: false,
+            },
         ]);
     };
 
@@ -31,11 +47,24 @@ const SelectedProducts = ({
     };
 
     const showVariantsHandler = (index) => {
-        setProducts([
-            ...products.splice(0, index),
-            { ...products[index], showVariants: !products[index].showVariants },
-            ...products.splice(index + 1),
-        ]);
+        const newItems = products;
+        newItems[index].showVariants = !products[index].showVariants;
+        setProducts(newItems);
+        navigate("/");
+    };
+
+    const handleDeleteVariant = (index, varIndex) => {
+        const newItems = products;
+        newItems[index].variants.splice(varIndex, 1);
+        setProducts(newItems);
+        navigate("/");
+    };
+
+    const addDiscountHandler = (index) => {
+        const newItems = products;
+        newItems[index].addDiscount = true;
+        setProducts(newItems);
+        navigate("/");
     };
 
     useEffect(() => {
@@ -49,6 +78,7 @@ const SelectedProducts = ({
                         id: product.id,
                         variants: [],
                         showVariants: false,
+                        addDiscount: false,
                     });
                     const currIndex = newItems.length - 1;
 
@@ -67,6 +97,7 @@ const SelectedProducts = ({
             newProducts.splice(newIndex, 1, ...newItems);
 
             setProducts(newProducts);
+            navigate("/");
         }
     }, [modalOpen]);
 
@@ -74,7 +105,7 @@ const SelectedProducts = ({
         <Fragment>
             {products.map((product, index) => (
                 <div key={index}>
-                    <img src={dragIcon} alt='drag icon' />
+                    <img src={dragIcon} alt="drag icon" />
                     <div>{index + 1}.</div>
                     <input
                         type="text"
@@ -85,14 +116,26 @@ const SelectedProducts = ({
                     />
                     <img
                         src={pencilIcon}
-                        alt='edit icon'
+                        alt="edit icon"
                         onClick={() => handleEditProduct(index)}
                     />
-                    <input type="number" name="discountValue" />
-                    <select name="discountType">
-                        <option value="percent">% off</option>
-                        <option value="flat">Flat Off</option>
-                    </select>
+                    {!products[index].addDiscount && (
+                        <button
+                            onClick={() => addDiscountHandler(index)}
+                            disabled={!products[index].name.length}
+                        >
+                            Add discount
+                        </button>
+                    )}
+                    {products[index].addDiscount && (
+                        <Fragment>
+                            <input type="number" name="discountValue" />
+                            <select name="discountType">
+                                <option value="percent">% off</option>
+                                <option value="flat">Flat Off</option>
+                            </select>
+                        </Fragment>
+                    )}
                     <button
                         type="button"
                         onClick={() => handleDeleteProduct(index)}
@@ -111,43 +154,59 @@ const SelectedProducts = ({
                         )}
                     {(products[index].variants.length === 1 ||
                         products[index].showVariants) && (
-                        // <div>
-                        //     {products[index].variants.map(
-                        //         (variant, varIndex) => {
-                        //             <div>
-                        //                 <img src={dragIcon} />
-                        //                 <input
-                        //                     type="text"
-                        //                     name="name"
-                        //                     value={variant.name}
-                        //                     placeholder="Select product"
-                        //                     readOnly
-                        //                 />
-                        //                 <input
-                        //                     type="number"
-                        //                     name="discountValue"
-                        //                 />
-                        //                 <select name="discountType">
-                        //                     <option value="percent">
-                        //                         % off
-                        //                     </option>
-                        //                     <option value="flat">
-                        //                         Flat Off
-                        //                     </option>
-                        //                 </select>
-                        //                 <button
-                        //                     type="button"
-                        //                     onClick={() =>
-                        //                         handleDeleteProduct(index)
-                        //                     }
-                        //                 >
-                        //                     X
-                        //                 </button>
-                        //             </div>;
-                        //         }
-                        //     )}
-                        // </div>
-                        <div>{index}</div>
+                        <div>
+                            {products[index].variants.map(
+                                (variant, varIndex) => {
+                                    return (
+                                        <div key={varIndex}>
+                                            <img
+                                                src={dragIcon}
+                                                alt="drag icon"
+                                            />
+                                            <input
+                                                type="text"
+                                                name="name"
+                                                value={variant.name}
+                                                placeholder="Select product"
+                                                readOnly
+                                            />
+                                            {products[index].addDiscount && (
+                                                <Fragment>
+                                                    <input
+                                                        type="number"
+                                                        name="discountValue"
+                                                    />
+                                                    <select name="discountType">
+                                                        <option value="percent">
+                                                            % off
+                                                        </option>
+                                                        <option value="flat">
+                                                            Flat Off
+                                                        </option>
+                                                    </select>
+                                                </Fragment>
+                                            )}
+                                            <button
+                                                type="button"
+                                                onClick={() =>
+                                                    products[index].variants
+                                                        .length === 1
+                                                        ? handleDeleteProduct(
+                                                              index
+                                                          )
+                                                        : handleDeleteVariant(
+                                                              index,
+                                                              varIndex
+                                                          )
+                                                }
+                                            >
+                                                X
+                                            </button>
+                                        </div>
+                                    );
+                                }
+                            )}
+                        </div>
                     )}
                     {products[index].showVariants && (
                         <div
