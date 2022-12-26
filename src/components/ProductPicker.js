@@ -25,6 +25,7 @@ const ProductPicker = () => {
         const data = await response.json();
 
         setProductData(data);
+        // console.log(data)
     };
 
     useEffect(() => {
@@ -47,7 +48,6 @@ const ProductPicker = () => {
 
             setFilteredData(filteredItems);
         }
-        // console.log(filteredItems)
     }, [searchInput]);
 
     const getSelectedItems = (items) => {

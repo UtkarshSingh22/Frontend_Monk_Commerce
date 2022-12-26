@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import dragIcon from "../imgs/drag.png";
 import pencilIcon from "../imgs/pencil.png";
 
@@ -38,14 +38,12 @@ const SelectedProducts = ({
         ]);
     };
 
-    console.log(products);
-
     useEffect(() => {
         if (!modalOpen) {
             const newItems = [];
 
             for (let product of allProducts) {
-                if (selectedItems[product.id]) {
+                if (product.id in selectedItems) {
                     newItems.push({
                         name: product.title,
                         id: product.id,
@@ -55,7 +53,7 @@ const SelectedProducts = ({
                     const currIndex = newItems.length - 1;
 
                     for (let variant of product.variants) {
-                        if (selectedItems[variant.id]) {
+                        if (selectedItems[product.id].includes(variant.id)) {
                             newItems[currIndex].variants.push({
                                 name: variant.title,
                                 id: variant.id,
@@ -65,19 +63,18 @@ const SelectedProducts = ({
                 }
             }
 
-            setProducts([
-                ...products.splice(0, newIndex),
-                ...newItems,
-                ...products.splice(newIndex + 1),
-            ]);
+            const newProducts = products;
+            newProducts.splice(newIndex, 1, ...newItems);
+
+            setProducts(newProducts);
         }
     }, [modalOpen]);
 
     return (
-        <form>
+        <Fragment>
             {products.map((product, index) => (
                 <div key={index}>
-                    <img src={dragIcon} />
+                    <img src={dragIcon} alt='drag icon' />
                     <div>{index + 1}.</div>
                     <input
                         type="text"
@@ -88,6 +85,7 @@ const SelectedProducts = ({
                     />
                     <img
                         src={pencilIcon}
+                        alt='edit icon'
                         onClick={() => handleEditProduct(index)}
                     />
                     <input type="number" name="discountValue" />
@@ -113,42 +111,43 @@ const SelectedProducts = ({
                         )}
                     {(products[index].variants.length === 1 ||
                         products[index].showVariants) && (
-                        <div>
-                            {products[index].variants.map(
-                                (variant, varIndex) => {
-                                    <div>
-                                        <img src={dragIcon} />
-                                        <input
-                                            type="text"
-                                            name="name"
-                                            value={variant.name}
-                                            placeholder="Select product"
-                                            readOnly
-                                        />
-                                        <input
-                                            type="number"
-                                            name="discountValue"
-                                        />
-                                        <select name="discountType">
-                                            <option value="percent">
-                                                % off
-                                            </option>
-                                            <option value="flat">
-                                                Flat Off
-                                            </option>
-                                        </select>
-                                        <button
-                                            type="button"
-                                            onClick={() =>
-                                                handleDeleteProduct(index)
-                                            }
-                                        >
-                                            X
-                                        </button>
-                                    </div>;
-                                }
-                            )}
-                        </div>
+                        // <div>
+                        //     {products[index].variants.map(
+                        //         (variant, varIndex) => {
+                        //             <div>
+                        //                 <img src={dragIcon} />
+                        //                 <input
+                        //                     type="text"
+                        //                     name="name"
+                        //                     value={variant.name}
+                        //                     placeholder="Select product"
+                        //                     readOnly
+                        //                 />
+                        //                 <input
+                        //                     type="number"
+                        //                     name="discountValue"
+                        //                 />
+                        //                 <select name="discountType">
+                        //                     <option value="percent">
+                        //                         % off
+                        //                     </option>
+                        //                     <option value="flat">
+                        //                         Flat Off
+                        //                     </option>
+                        //                 </select>
+                        //                 <button
+                        //                     type="button"
+                        //                     onClick={() =>
+                        //                         handleDeleteProduct(index)
+                        //                     }
+                        //                 >
+                        //                     X
+                        //                 </button>
+                        //             </div>;
+                        //         }
+                        //     )}
+                        // </div>
+                        <div>{index}</div>
                     )}
                     {products[index].showVariants && (
                         <div
@@ -162,7 +161,7 @@ const SelectedProducts = ({
                 </div>
             ))}
             <button onClick={handleAddProduct}>Add Product</button>
-        </form>
+        </Fragment>
     );
 };
 

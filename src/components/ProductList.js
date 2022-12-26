@@ -13,47 +13,59 @@ function ProductList({ products, onCloseModal, onSelectItems }) {
         const isChecked = event.target.checked;
 
         if (variantId.length) {
-            let productChecked = 0;
-            for (let product of products) {
-                if (product.id == productId) {
-                    for (let variant of product.variants) {
-                        if (selected[variant.id] === true) {
-                            productChecked++;
-                        }
-                    }
+            // Update the selected state for the variant and its parent product
+            if (isChecked) {
+                const items = [...(selected[productId] || [])];
+                (!selected[productId] ||
+                    !selected[productId].includes(+variantId)) &&
+                    items.push(+variantId);
+
+                setSelected({
+                    ...selected,
+                    [productId]: items,
+                });
+            } else {
+                const items = selected[productId].filter((itemId) => {
+                    return itemId !== +variantId;
+                });
+                console.log(items);
+
+                if (!items.length) {
+                    const selectedItems = { ...selected };
+                    delete selectedItems[productId];
+                    setSelected(selectedItems);
+                } else {
+                    setSelected({
+                        ...selected,
+                        [productId]: items,
+                    });
                 }
             }
 
-            // Update the selected state for the variant and its parent product
-            setSelected({
-                ...selected,
-                [variantId]: isChecked,
-                [productId]: isChecked
-                    ? true
-                    : productChecked > 1
-                    ? true
-                    : false,
-            });
-
             isChecked
-                ? !productChecked &&
+                ? !selected[productId] &&
                   setTotalProducts((prevState) => prevState + 1)
-                : productChecked === 1 &&
+                : selected[productId].length === 1 &&
                   setTotalProducts((prevState) => prevState - 1);
         } else {
             // Update the selected state for the product and its variants
             const product = products.find((p) => p.id == productId);
 
-            setSelected({
-                ...selected,
-                [productId]: isChecked,
-                ...product.variants.reduce((acc, variant) => {
-                    acc[variant.id] = isChecked;
-                    return acc;
-                }, {}),
-            });
+            if (isChecked) {
+                setSelected({
+                    ...selected,
+                    [productId]: product.variants.reduce((acc, variant) => {
+                        acc.push(variant.id);
+                        return acc;
+                    }, []),
+                });
+            } else {
+                const items = selected;
+                delete items[productId];
+                setSelected(items);
+            }
 
-            isChecked === true
+            isChecked
                 ? setTotalProducts((prevState) => prevState + 1)
                 : setTotalProducts((prevState) => prevState - 1);
         }
@@ -61,9 +73,9 @@ function ProductList({ products, onCloseModal, onSelectItems }) {
     // Handle click event for the "Add" button
     const handleClick = () => {
         onSelectItems(selected);
-        onCloseModal()
-        setSelected({})
-        setTotalProducts(0)
+        onCloseModal();
+        setSelected({});
+        setTotalProducts(0);
     };
 
     return (

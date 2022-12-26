@@ -14,7 +14,7 @@ const AddProduct = ({
                         type="checkbox"
                         value={product.id}
                         onChange={handleChange}
-                        checked={selected[product.id] === true}
+                        checked={product.id in selected}
                     />
                     <img src={product.image.src} />
                     <h3>{product.title}</h3>
@@ -25,7 +25,7 @@ const AddProduct = ({
                                 name={variant.id}
                                 value={product.id}
                                 onChange={handleChange}
-                                checked={selected[variant.id] === true}
+                                checked={!selected[product.id] ? false : selected[product.id].includes(variant.id)}
                             />
                             {variant.title}
                         </div>
