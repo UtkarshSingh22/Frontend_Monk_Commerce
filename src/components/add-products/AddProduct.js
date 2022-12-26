@@ -27,7 +27,9 @@ const AddProduct = ({
                                 onChange={handleChange}
                                 checked={!selected[product.id] ? false : selected[product.id].includes(variant.id)}
                             />
-                            {variant.title}
+                            <div>{variant.title}</div>
+                            {variant.inventory_quantity && <div>{variant.inventory_quantity} available </div>}
+                            <div>₹{variant.price}</div>
                         </div>
                     ))}
                 </div>
