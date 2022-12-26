@@ -1,16 +1,37 @@
-.main>header{
+.main > header {
     padding: 10px 20px;
     box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
 }
-.main>section{
+.main > section {
     text-align: center;
 }
-.content{
+.content {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.heading{
+.heading {
     display: flex;
     gap: 300px;
+}
+.modal {
+    display: flex;
+    flex-direction: column;
+}
+.head > div {
+    font-size: large;
+    font-weight: 600;
+}
+.head{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.input{
+    width: 30%;
+    height: 20px;
+    margin-bottom: 20px;
+}
+.del{
+    cursor: pointer;
 }

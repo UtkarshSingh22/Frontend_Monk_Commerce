@@ -2,7 +2,7 @@
     position: fixed;
     left: 50%;
     top: 10vh;
-    width: 70vw;
+    width: 50vw;
     background-color: white;
     color: black;
     box-shadow: 0 4px 10px rgb(10, 10, 10);
@@ -13,6 +13,7 @@
     min-width: 400px;
     overflow-y: scroll;
     height: 70vh;
+    margin: 0;
 }
 
 .backdrop {

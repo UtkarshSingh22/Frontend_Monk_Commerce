@@ -72,15 +72,16 @@ const ProductPicker = () => {
                 </div>
             </section>
             {modalOpen && (
-                <Modal onCloseModal={modalToggleHandler}>
-                    <div>
-                        <h2>Add products</h2>
-                        <h2 onClick={modalToggleHandler}>X</h2>
+                <Modal onCloseModal={modalToggleHandler} className={styles.modal}>
+                    <div className={styles.head}>
+                        <div>Add products</div>
+                        <div onClick={modalToggleHandler} className={styles.del}>X</div>
                     </div>
                     <input
                         type="text"
                         onChange={inputChangeHandler}
                         value={searchInput}
+                        className={styles.input}
                         placeholder='Search product'
                     />
                     <ProductList
