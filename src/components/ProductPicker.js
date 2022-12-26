@@ -1,14 +1,14 @@
 import { Fragment, useEffect, useState } from "react";
-import Modal from "./Modal";
-import ProductList from "./ProductList";
-import SelectedProducts from "./SelectedProducts";
+import Modal from "./add-products/Modal";
+import ProductList from "./add-products/ProductList";
+import SelectedProducts from "./manage-products/SelectedProducts";
 
 const ProductPicker = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const [searchInput, setSearchInput] = useState("");
     const [productData, setProductData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
-    const [selectedItems, setSelectedItems] = useState({})
+    const [selectedItems, setSelectedItems] = useState({});
 
     const modalToggleHandler = () => {
         setModalOpen((prevState) => !prevState);
@@ -51,7 +51,7 @@ const ProductPicker = () => {
 
     const getSelectedItems = (items) => {
         setSelectedItems(items);
-    }
+    };
 
     return (
         <Fragment>
@@ -67,7 +67,6 @@ const ProductPicker = () => {
                         allProducts={productData}
                         onToggleModal={modalToggleHandler}
                         selectedItems={selectedItems}
-                        modalOpen={modalOpen}
                     />
                 </div>
             </section>
