@@ -1,7 +1,8 @@
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "./add-products/Modal";
 import ProductList from "./add-products/ProductList";
 import SelectedProducts from "./manage-products/SelectedProducts";
+import styles from '../styles/ProductPicker.module.css'
 
 const ProductPicker = () => {
     const [modalOpen, setModalOpen] = useState(false);
@@ -54,12 +55,12 @@ const ProductPicker = () => {
     };
 
     return (
-        <Fragment>
+        <div className={styles.main}>
             <header>Monk Upsell & Cross-sell</header>
             <section>
                 <h2>Add Products</h2>
-                <div>
-                    <div>
+                <div className={styles.content}>
+                    <div className={styles.heading}>
                         <h3>Product</h3>
                         <h3>Discount</h3>
                     </div>
@@ -80,6 +81,7 @@ const ProductPicker = () => {
                         type="text"
                         onChange={inputChangeHandler}
                         value={searchInput}
+                        placeholder='Search product'
                     />
                     <ProductList
                         products={filteredData}
@@ -88,7 +90,7 @@ const ProductPicker = () => {
                     />
                 </Modal>
             )}
-        </Fragment>
+        </div>
     );
 };
 

@@ -1,0 +1,45 @@
+.item {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding-bottom: 10px;
+    justify-content: start;
+    margin-left: 100px;
+}
+
+.item > img {
+    width: 20px;
+    height: 20px;
+}
+.name {
+    width: 200px;
+    height: 20px;
+    margin-right: 15px;
+    border-radius: 100px;
+    border: 1px solid grey;
+}
+.delete {
+    background-color: white;
+    color: grey;
+    border: none;
+    font-size: medium;
+    cursor: pointer;
+}
+.drag {
+    cursor: move;
+}
+.amount{
+    width: 60px;
+    height: 20px;
+    border-radius: 100px;
+    border: 1px solid grey;
+}
+.select{
+    width: 70px;
+    height: 25px;
+    border-radius: 100px;
+    border: 1px solid grey;
+}
+.drag{
+    cursor: move;
+}

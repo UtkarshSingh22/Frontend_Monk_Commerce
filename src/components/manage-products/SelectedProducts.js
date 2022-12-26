@@ -125,24 +125,29 @@ const SelectedProducts = ({ allProducts, onToggleModal, selectedItems }) => {
                         strategy={verticalListSortingStrategy}
                     >
                         {products.map((product, index) => (
-                            <ProductItem
-                                key={index}
-                                index={index}
-                                product={product}
-                                handleEditProduct={handleEditProduct}
-                                products={products}
-                                setProducts={setProducts}
-                                addDiscountHandler={addDiscountHandler}
-                                handleDeleteProduct={handleDeleteProduct}
-                                showVariantsHandler={showVariantsHandler}
-                                handleDeleteVariant={handleDeleteVariant}
-                            />
+                            <div>
+                                <ProductItem
+                                    key={index}
+                                    index={index}
+                                    product={product}
+                                    handleEditProduct={handleEditProduct}
+                                    products={products}
+                                    setProducts={setProducts}
+                                    addDiscountHandler={addDiscountHandler}
+                                    handleDeleteProduct={handleDeleteProduct}
+                                    showVariantsHandler={showVariantsHandler}
+                                    handleDeleteVariant={handleDeleteVariant}
+                                />
+                                <div className="end"></div>
+                            </div>
                         ))}
                     </SortableContext>
                 </div>
             </DndContext>
 
-            <button onClick={handleAddProduct}>Add Product</button>
+            <button className="add" onClick={handleAddProduct}>
+                Add Product
+            </button>
         </Fragment>
     );
 };
