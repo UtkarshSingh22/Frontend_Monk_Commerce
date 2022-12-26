@@ -4,7 +4,6 @@ import { DndContext, closestCenter } from "@dnd-kit/core";
 import {
     arrayMove,
     SortableContext,
-    useSortable,
     verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import ProductItem from "./ProductItem";
@@ -132,6 +131,7 @@ const SelectedProducts = ({ allProducts, onToggleModal, selectedItems }) => {
                                 product={product}
                                 handleEditProduct={handleEditProduct}
                                 products={products}
+                                setProducts={setProducts}
                                 addDiscountHandler={addDiscountHandler}
                                 handleDeleteProduct={handleDeleteProduct}
                                 showVariantsHandler={showVariantsHandler}
