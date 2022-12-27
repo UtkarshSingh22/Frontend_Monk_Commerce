@@ -4,6 +4,8 @@ import AddProduct from "./AddProduct";
 function ProductList({ products, onCloseModal, onSelectItems, setSearchInput }) {
     // State to store the selected products and their variants
     const [selected, setSelected] = useState({});
+
+    //state for storing the number of products selected
     const [totalProducts, setTotalProducts] = useState(0);
 
     // Handle change event for checkboxes
@@ -13,7 +15,7 @@ function ProductList({ products, onCloseModal, onSelectItems, setSearchInput }) 
         const isChecked = event.target.checked;
 
         if (variantId.length) {
-            // Update the selected state for the variant and its parent product
+            //when the variant product is checked/unchecked
             if (isChecked) {
                 const items = [...(selected[productId] || [])];
                 (!selected[productId] ||
@@ -48,7 +50,7 @@ function ProductList({ products, onCloseModal, onSelectItems, setSearchInput }) 
                 : selected[productId].length === 1 &&
                   setTotalProducts((prevState) => prevState - 1);
         } else {
-            // Update the selected state for the product and its variants
+            //when the parent product is checked/unchecked
             const product = products.find((p) => p.id == productId);
 
             if (isChecked) {

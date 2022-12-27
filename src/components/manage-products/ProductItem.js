@@ -31,6 +31,7 @@ const ProductItem = ({
         transition,
     };
 
+    //Drag and drop functionality for variants
     const handleDragEnd = (event, index) => {
         const { active, over } = event;
         if (active.id !== over.id) {

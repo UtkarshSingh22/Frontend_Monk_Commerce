@@ -5,20 +5,32 @@ import SelectedProducts from "./manage-products/SelectedProducts";
 import styles from "../styles/ProductPicker.module.css";
 
 const ProductPicker = () => {
+    //state for storing whether modal is open/close
     const [modalOpen, setModalOpen] = useState(false);
+
+    //state for storing search input
     const [searchInput, setSearchInput] = useState("");
+
+    //state for storing fetched products from API
     const [productData, setProductData] = useState([]);
+
+    //state for storing filtered data
     const [filteredData, setFilteredData] = useState([]);
+
+    //state for storing selected items
     const [selectedItems, setSelectedItems] = useState({});
 
+    //opening and closing of modal
     const modalToggleHandler = () => {
         setModalOpen((prevState) => !prevState);
     };
 
+    //updating search input
     const inputChangeHandler = (event) => {
         setSearchInput(event.target.value);
     };
 
+    //fetching products from the API
     const fetchProducts = async () => {
         try {
             const response = await fetch(
@@ -36,6 +48,7 @@ const ProductPicker = () => {
         fetchProducts();
     }, []);
 
+    //filtering data as per search
     useEffect(() => {
         if (!searchInput.length) {
             setFilteredData([]);
@@ -54,6 +67,7 @@ const ProductPicker = () => {
         }
     }, [searchInput]);
 
+    //fetching the selected items from modal component
     const getSelectedItems = (items) => {
         setSelectedItems(items);
     };

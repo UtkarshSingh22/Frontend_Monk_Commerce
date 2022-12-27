@@ -9,6 +9,7 @@ import {
 import ProductItem from "./ProductItem";
 
 const SelectedProducts = ({ allProducts, onToggleModal, selectedItems }) => {
+    //State for storing the list of selected products
     const [products, setProducts] = useState([
         {
             name: "",
@@ -19,12 +20,15 @@ const SelectedProducts = ({ allProducts, onToggleModal, selectedItems }) => {
         },
     ]);
 
+    //State for storing the index of element on which edit button was clicked
     const [newIndex, setNewIndex] = useState();
 
+    //Prevent re-rendering of selectedItems object
     const memoizeSelectedItems = useMemo(() => selectedItems, [selectedItems]);
 
     const navigate = useNavigate();
 
+    //Handle adding product
     const handleAddProduct = (event) => {
         event.preventDefault();
         setProducts([
@@ -39,15 +43,18 @@ const SelectedProducts = ({ allProducts, onToggleModal, selectedItems }) => {
         ]);
     };
 
+    //Handle deleting product
     const handleDeleteProduct = (index) => {
         setProducts(products.filter((product, i) => i !== index));
     };
 
+    //Handle editing product
     const handleEditProduct = (index) => {
         onToggleModal();
         setNewIndex(index);
     };
 
+    //Handle showing variants
     const showVariantsHandler = (index) => {
         const newItems = products;
         newItems[index].showVariants = !products[index].showVariants;
@@ -55,6 +62,7 @@ const SelectedProducts = ({ allProducts, onToggleModal, selectedItems }) => {
         navigate("/");
     };
 
+    //Handle deleting variant
     const handleDeleteVariant = (index, varIndex) => {
         const newItems = products;
         newItems[index].variants.splice(varIndex, 1);
@@ -62,6 +70,7 @@ const SelectedProducts = ({ allProducts, onToggleModal, selectedItems }) => {
         navigate("/");
     };
 
+    //Handle add discount button
     const addDiscountHandler = (index) => {
         const newItems = products;
         newItems[index].addDiscount = true;
@@ -70,6 +79,7 @@ const SelectedProducts = ({ allProducts, onToggleModal, selectedItems }) => {
     };
 
     useEffect(() => {
+        //Adding the selected items to the state
         if (Object.keys(selectedItems).length) {
             const newItems = [];
 
@@ -103,6 +113,7 @@ const SelectedProducts = ({ allProducts, onToggleModal, selectedItems }) => {
         }
     }, [memoizeSelectedItems]);
 
+    //Drag and drop functionality
     const handleDragEnd = (event) => {
         const { active, over } = event;
 
