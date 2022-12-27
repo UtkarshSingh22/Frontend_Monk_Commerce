@@ -7,7 +7,11 @@ const Backdrop = ({ onCloseModal }) => {
 };
 
 const Overlay = ({ children, className }) => {
-    return <div className={`${styles.modal} ${className}`}>{children}</div>;
+    return (
+        <div className={`${styles.modal} ${className}`} id="modalPopup">
+            {children}
+        </div>
+    );
 };
 
 const Modal = ({ children, onCloseModal, className }) => {
@@ -15,7 +19,10 @@ const Modal = ({ children, onCloseModal, className }) => {
 
     return (
         <Fragment>
-            {ReactDOM.createPortal(<Overlay className={className}>{children}</Overlay>, element)}
+            {ReactDOM.createPortal(
+                <Overlay className={className}>{children}</Overlay>,
+                element
+            )}
             {ReactDOM.createPortal(
                 <Backdrop onCloseModal={onCloseModal} />,
                 element

@@ -7,12 +7,13 @@ const AddProduct = ({
     handleChange,
     handleClick,
     onCloseModal,
+    hasMore
 }) => {
     return (
         <div>
             <div className={styles.main}>
-                {products.map((product) => (
-                    <div key={product.id} className={styles.product}>
+                {products.map((product, index) => (
+                    <div key={index} className={styles.product}>
                         <div className={styles.head}>
                             <input
                                 type="checkbox"
@@ -24,9 +25,9 @@ const AddProduct = ({
                             <div>{product.title}</div>
                         </div>
                         <div className={styles.variants}>
-                            {product.variants.map((variant) => (
+                            {product.variants.map((variant, varIndex) => (
                                 <div
-                                    key={variant.id}
+                                    key={varIndex}
                                     className={styles.variant}
                                 >
                                     <div>
@@ -60,6 +61,7 @@ const AddProduct = ({
                     </div>
                 ))}
             </div>
+            {hasMore && <h3>Loading more products...</h3>}
             <div className={styles.buttons}>
                 <div>{totalProducts} products selected</div>
                 <div>

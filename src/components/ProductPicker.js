@@ -17,6 +17,12 @@ const ProductPicker = () => {
     //state for storing the loading state
     const [loading, setLoading] = useState(false);
 
+    //state for storing the current page
+    const [page, setPage] = useState(1);
+
+    //state for storing whether more products are there
+    const [hasMore, setHasMore] = useState(true);
+
     //state for storing selected items
     const [selectedItems, setSelectedItems] = useState({});
 
@@ -31,18 +37,39 @@ const ProductPicker = () => {
     };
 
     //fetching products from the API
-    const fetchProducts = async (searchInput, page = 1) => {
-        setLoading(true)
+    const fetchProducts = async (searchInput, resetData = false, page = 1) => {
+        setLoading(true);
         try {
             const response = await fetch(
                 `https://stageapibc.monkcommerce.app/admin/shop/product?search=${searchInput}&page=${page}`
             );
             const data = await response.json();
-            setProductData(data);
+
+            if (!data) {
+                setHasMore(false)
+                return;
+            }
+
+            resetData
+                ? setProductData(data)
+                : setProductData([...productData, ...data]);
         } catch (error) {
             console.log(error);
         }
-        setLoading(false)
+        setLoading(false);
+    };
+
+    const handleScroll = () => {
+        const modal = document.querySelector("#modalPopup");
+        if (
+            modal.scrollHeight - modal.scrollTop <= modal.offsetHeight &&
+            hasMore
+        ) {
+            setPage((page) => page + 1);
+            fetchProducts(searchInput, false, page);
+        }
+
+        // console.log(productData);
     };
 
     useEffect(() => {
@@ -51,8 +78,18 @@ const ProductPicker = () => {
 
     //filtering data as per search
     useEffect(() => {
-        fetchProducts(searchInput);
+        setHasMore(true);
+        setPage(1);
+        fetchProducts(searchInput, true);
     }, [searchInput]);
+
+    useEffect(() => {
+        const modal = document.querySelector("#modalPopup");
+        if (modal) {
+            modal.addEventListener("scroll", handleScroll);
+            return () => modal.removeEventListener("scroll", handleScroll);
+        }
+    }, [page, modalOpen]);
 
     //fetching the selected items from modal component
     const getSelectedItems = (items) => {
@@ -98,12 +135,13 @@ const ProductPicker = () => {
                         placeholder="Search product"
                     />
                     {loading && <h2>Loading...</h2>}
-                    {!loading && <ProductList
+                    <ProductList
                         products={productData ? productData : []}
                         onCloseModal={modalToggleHandler}
                         onSelectItems={getSelectedItems}
                         setSearchInput={setSearchInput}
-                    />}
+                        hasMore={hasMore}
+                    />
                 </Modal>
             )}
         </div>

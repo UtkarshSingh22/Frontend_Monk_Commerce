@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AddProduct from "./AddProduct";
 
-function ProductList({ products, onCloseModal, onSelectItems, setSearchInput }) {
+function ProductList({ products, onCloseModal, onSelectItems, setSearchInput, hasMore }) {
     // State to store the selected products and their variants
     const [selected, setSelected] = useState({});
 
@@ -89,6 +89,7 @@ function ProductList({ products, onCloseModal, onSelectItems, setSearchInput }) 
             handleChange={handleChange}
             handleClick={handleClick}
             onCloseModal={onCloseModal}
+            hasMore={hasMore}
         />
     );
 }
