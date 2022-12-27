@@ -68,8 +68,6 @@ const ProductPicker = () => {
             setPage((page) => page + 1);
             fetchProducts(searchInput, false, page);
         }
-
-        // console.log(productData);
     };
 
     useEffect(() => {
