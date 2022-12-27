@@ -40,24 +40,30 @@ const VariantItem = ({
             />
             {products[index].addDiscount && (
                 <Fragment>
-                    <input type="number" name="discountValue" className={styles.amount}/>
+                    <input
+                        type="number"
+                        name="discountValue"
+                        className={styles.amount}
+                    />
                     <select name="discountType" className={styles.select}>
                         <option value="percent">% off</option>
                         <option value="flat">Flat Off</option>
                     </select>
                 </Fragment>
             )}
-            <button
-                type="button"
-                className={styles.delete}
-                onClick={() =>
-                    products[index].variants.length === 1
-                        ? handleDeleteProduct(index)
-                        : handleDeleteVariant(index, varIndex)
-                }
-            >
-                X
-            </button>
+            {products.length > 1 && (
+                <button
+                    type="button"
+                    className={styles.delete}
+                    onClick={() =>
+                        products[index].variants.length === 1
+                            ? handleDeleteProduct(index)
+                            : handleDeleteVariant(index, varIndex)
+                    }
+                >
+                    X
+                </button>
+            )}
         </div>
     );
 };

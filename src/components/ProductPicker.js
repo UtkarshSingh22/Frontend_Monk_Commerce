@@ -14,8 +14,8 @@ const ProductPicker = () => {
     //state for storing fetched products from API
     const [productData, setProductData] = useState([]);
 
-    //state for storing filtered data
-    const [filteredData, setFilteredData] = useState([]);
+    //state for storing the loading state
+    const [loading, setLoading] = useState(false);
 
     //state for storing selected items
     const [selectedItems, setSelectedItems] = useState({});
@@ -31,40 +31,27 @@ const ProductPicker = () => {
     };
 
     //fetching products from the API
-    const fetchProducts = async () => {
+    const fetchProducts = async (searchInput, page = 1) => {
+        setLoading(true)
         try {
             const response = await fetch(
-                "https://stageapibc.monkcommerce.app/admin/shop/product?search=F&page=1"
+                `https://stageapibc.monkcommerce.app/admin/shop/product?search=${searchInput}&page=${page}`
             );
             const data = await response.json();
-
             setProductData(data);
         } catch (error) {
             console.log(error);
         }
+        setLoading(false)
     };
 
     useEffect(() => {
-        fetchProducts();
+        fetchProducts("");
     }, []);
 
     //filtering data as per search
     useEffect(() => {
-        if (!searchInput.length) {
-            setFilteredData([]);
-        } else {
-            const filteredItems = [];
-
-            for (let item of productData) {
-                if (
-                    item.title.toLowerCase().includes(searchInput.toLowerCase())
-                ) {
-                    filteredItems.push(item);
-                }
-            }
-
-            setFilteredData(filteredItems);
-        }
+        fetchProducts(searchInput);
     }, [searchInput]);
 
     //fetching the selected items from modal component
@@ -110,12 +97,13 @@ const ProductPicker = () => {
                         className={styles.input}
                         placeholder="Search product"
                     />
-                    <ProductList
-                        products={filteredData}
+                    {loading && <h2>Loading...</h2>}
+                    {!loading && <ProductList
+                        products={productData ? productData : []}
                         onCloseModal={modalToggleHandler}
                         onSelectItems={getSelectedItems}
                         setSearchInput={setSearchInput}
-                    />
+                    />}
                 </Modal>
             )}
         </div>

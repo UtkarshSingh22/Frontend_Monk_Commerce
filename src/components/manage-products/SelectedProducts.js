@@ -136,7 +136,7 @@ const SelectedProducts = ({ allProducts, onToggleModal, selectedItems }) => {
                         strategy={verticalListSortingStrategy}
                     >
                         {products.map((product, index) => (
-                            <div>
+                            <div key={index}>
                                 <ProductItem
                                     key={index}
                                     index={index}
