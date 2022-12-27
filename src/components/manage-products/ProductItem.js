@@ -97,13 +97,13 @@ const ProductItem = ({
                         </select>
                     </Fragment>
                 )}
-                <button
+                {products.length > 1 && <button
                     className={styles.delete}
                     type="button"
                     onClick={() => handleDeleteProduct(index)}
                 >
                     X
-                </button>
+                </button>}
             </div>
             <div className={styles.show}>
                 {products[index].variants.length > 1 &&

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Modal from "./add-products/Modal";
 import ProductList from "./add-products/ProductList";
 import SelectedProducts from "./manage-products/SelectedProducts";
-import styles from '../styles/ProductPicker.module.css'
+import styles from "../styles/ProductPicker.module.css";
 
 const ProductPicker = () => {
     const [modalOpen, setModalOpen] = useState(false);
@@ -20,12 +20,16 @@ const ProductPicker = () => {
     };
 
     const fetchProducts = async () => {
-        const response = await fetch(
-            "https://stageapibc.monkcommerce.app/admin/shop/product?search=F&page=1"
-        );
-        const data = await response.json();
+        try {
+            const response = await fetch(
+                "https://stageapibc.monkcommerce.app/admin/shop/product?search=F&page=1"
+            );
+            const data = await response.json();
 
-        setProductData(data);
+            setProductData(data);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     useEffect(() => {
@@ -72,22 +76,31 @@ const ProductPicker = () => {
                 </div>
             </section>
             {modalOpen && (
-                <Modal onCloseModal={modalToggleHandler} className={styles.modal}>
+                <Modal
+                    onCloseModal={modalToggleHandler}
+                    className={styles.modal}
+                >
                     <div className={styles.head}>
                         <div>Add products</div>
-                        <div onClick={modalToggleHandler} className={styles.del}>X</div>
+                        <div
+                            onClick={modalToggleHandler}
+                            className={styles.del}
+                        >
+                            X
+                        </div>
                     </div>
                     <input
                         type="text"
                         onChange={inputChangeHandler}
                         value={searchInput}
                         className={styles.input}
-                        placeholder='Search product'
+                        placeholder="Search product"
                     />
                     <ProductList
                         products={filteredData}
                         onCloseModal={modalToggleHandler}
                         onSelectItems={getSelectedItems}
+                        setSearchInput={setSearchInput}
                     />
                 </Modal>
             )}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AddProduct from "./AddProduct";
 
-function ProductList({ products, onCloseModal, onSelectItems }) {
+function ProductList({ products, onCloseModal, onSelectItems, setSearchInput }) {
     // State to store the selected products and their variants
     const [selected, setSelected] = useState({});
     const [totalProducts, setTotalProducts] = useState(0);
@@ -74,6 +74,7 @@ function ProductList({ products, onCloseModal, onSelectItems }) {
     const handleClick = () => {
         onSelectItems(selected);
         onCloseModal();
+        setSearchInput('')
         setSelected({});
         setTotalProducts(0);
     };
